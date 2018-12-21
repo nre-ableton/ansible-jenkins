@@ -6,5 +6,6 @@
     status_code: 200,404
   register: jenkins_token_result
 
-- set_fact:
+- name: Set fact with Jenkins token
+  set_fact:
     jenkins_token: "{{ jenkins_token_result }}"
