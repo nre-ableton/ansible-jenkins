@@ -8,6 +8,12 @@
     group: "{{ jenkins_config_group }}"
     state: directory
 
+- shell: "id -u"
+  register: id_cmd
+
+- set_fact:
+    local_user: "{{ id_cmd.stdout }}"
+
 - name: Container is running (with ingress port)
   docker_container:
     name: "{{ jenkins_docker_container_name }}"
@@ -18,6 +24,7 @@
       - "{{ jenkins_home }}:/var/jenkins_home"
     env:
       JAVA_OPTS: "{{ jenkins_java_opts }}"
+    user: "{{ local_user }}"
   register: container_result
   when: jenkins_docker_expose_port
 
